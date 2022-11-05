@@ -1,0 +1,39 @@
+swagger: "2.0"
+info:
+  title: Fetch-app API
+  description: |
+    API Documentation
+  version: 1.0.0
+  termsOfService: http://beego.me/
+  contact:
+    email: ingunawandra@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+basePath: /v1
+paths:
+  /private/storages/:
+    get:
+      tags:
+      - private/storages
+      summary: Get All Storages
+      description: |-
+        Get All Storages
+        <br>
+      operationId: StoragePrivateController.Get All Storages
+      parameters:
+      - in: query
+        name: limit
+        description: limit of this request
+        type: integer
+        format: int64
+      - in: query
+        name: page
+        description: page of this request
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+        "403":
+          description: ""
