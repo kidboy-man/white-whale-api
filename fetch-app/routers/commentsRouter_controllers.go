@@ -7,10 +7,10 @@ import (
 
 func init() {
 
-    beego.GlobalControllerRouter["fetch-app/controllers:StoragePrivateController"] = append(beego.GlobalControllerRouter["fetch-app/controllers:StoragePrivateController"],
+    beego.GlobalControllerRouter["fetch-app/controllers:StorageAdminController"] = append(beego.GlobalControllerRouter["fetch-app/controllers:StorageAdminController"],
         beego.ControllerComments{
-            Method: "GetAll",
-            Router: "/",
+            Method: "GetAllAggregated",
+            Router: "/aggregated",
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(
 				param.New("limit"),
@@ -21,8 +21,8 @@ func init() {
 
     beego.GlobalControllerRouter["fetch-app/controllers:StoragePrivateController"] = append(beego.GlobalControllerRouter["fetch-app/controllers:StoragePrivateController"],
         beego.ControllerComments{
-            Method: "GetAllAggregated",
-            Router: "/aggregated",
+            Method: "GetAll",
+            Router: "/",
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(
 				param.New("limit"),

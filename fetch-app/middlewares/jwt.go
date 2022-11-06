@@ -3,22 +3,22 @@ package middlewares
 import (
 	"encoding/json"
 	"errors"
-	"net/http"
-	"strings"
-	"time"
 	"fetch-app/conf"
 	"fetch-app/constants"
 	"fetch-app/datatransfers"
+	"net/http"
+	"strings"
+	"time"
 
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web/context"
 	"github.com/golang-jwt/jwt/v4"
 )
 
 type JWTClaims struct {
 	jwt.StandardClaims
-	UID      string `json:"uid"`
-	Username string `json:"username"`
-	IsAdmin  bool   `json:"isAdmin"`
+	UID  string `json:"uid"`
+	Role string `json:"role"`
 }
 
 type JWTConfig struct {
@@ -28,14 +28,13 @@ type JWTConfig struct {
 }
 
 type UserData struct {
-	UID      string `json:"uid"`
-	Username string `json:"username"`
-	IsAdmin  bool   `json:"isAdmin"`
+	UID  string `json:"uid"`
+	Role string `json:"role"`
 }
 
 func VerifyTokenAdmin(ctx *context.Context) {
 	userData, err := doVerifyToken(ctx.Request)
-	if err != nil || !userData.IsAdmin {
+	if err != nil || userData.Role != "admin" {
 		errAuth(ctx)
 		return
 	}
@@ -43,18 +42,20 @@ func VerifyTokenAdmin(ctx *context.Context) {
 
 func VerifyToken(ctx *context.Context) {
 	userData, err := doVerifyToken(ctx.Request)
+	logs.Debug("User Data", userData)
 	if err != nil {
 		errAuth(ctx)
 		return
 	}
 
 	ctx.Input.SetData("uid", userData.UID)
-	ctx.Input.SetData("isAdmin", userData.IsAdmin)
+	ctx.Input.SetData("role", userData.Role)
 }
 
 func doVerifyToken(r *http.Request) (result *UserData, err error) {
 
 	token, err := getToken(r)
+	logs.Debug("token", token)
 	if err != nil {
 		return
 	}
@@ -69,8 +70,8 @@ func doVerifyToken(r *http.Request) (result *UserData, err error) {
 	}
 
 	result = &UserData{
-		UID:     claims.UID,
-		IsAdmin: claims.IsAdmin,
+		UID:  claims.UID,
+		Role: claims.Role,
 	}
 	return
 
@@ -99,6 +100,8 @@ func parseTokenJWT(token string) (isVerified bool, result *JWTClaims, err error)
 		return []byte(conf.AppConfig.JWTConfig.JWTSignatureKey), nil
 	})
 
+	logs.Debug("jwtClaims", jwtClaims)
+	logs.Debug("error parsing", err)
 	if result == nil || jwtClaims == nil || !jwtClaims.Valid || err != nil {
 		return
 	}

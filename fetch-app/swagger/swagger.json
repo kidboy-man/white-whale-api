@@ -15,14 +15,14 @@
     },
     "basePath": "/v1",
     "paths": {
-        "/private/storages/": {
+        "/admin/storages/aggregated": {
             "get": {
                 "tags": [
-                    "private/storages"
+                    "admin/storages"
                 ],
                 "summary": "Get All Storages",
                 "description": "Get All Storages\n\u003cbr\u003e",
-                "operationId": "StoragePrivateController.Get All Storages",
+                "operationId": "StorageAdminController.Get All Storages",
                 "parameters": [
                     {
                         "in": "query",
@@ -37,6 +37,13 @@
                         "description": "page of this request",
                         "type": "integer",
                         "format": "int64"
+                    },
+                    {
+                        "in": "header",
+                        "name": "authorization",
+                        "description": "bearer token in jwt",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -49,7 +56,7 @@
                 }
             }
         },
-        "/private/storages/aggregated": {
+        "/private/storages/": {
             "get": {
                 "tags": [
                     "private/storages"

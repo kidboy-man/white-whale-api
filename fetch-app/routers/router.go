@@ -9,6 +9,7 @@ package routers
 
 import (
 	"fetch-app/controllers"
+	"fetch-app/middlewares"
 
 	beego "github.com/beego/beego/v2/server/web"
 )
@@ -16,9 +17,16 @@ import (
 func init() {
 	ns := beego.NewNamespace("/v1",
 		beego.NSNamespace("/private/storages",
-			// beego.NSBefore(middlewares.VerifyTokenAdmin),
+			beego.NSBefore(middlewares.VerifyToken),
 			beego.NSInclude(
 				&controllers.StoragePrivateController{},
+			),
+		),
+
+		beego.NSNamespace("/admin/storages",
+			beego.NSBefore(middlewares.VerifyTokenAdmin),
+			beego.NSInclude(
+				&controllers.StorageAdminController{},
 			),
 		),
 	)

@@ -25,16 +25,3 @@ func (c *StoragePrivateController) GetAll(limit, page int) *JSONResponse {
 	storages, err := c.storageUcase.GetStorages()
 	return c.ReturnJSONResponse(storages, err)
 }
-
-// @Title Get All Storages
-// @Description Get All Storages
-// @Summary Get All Storages
-// @Param limit query int false "limit of this request"
-// @Param page query int false "page of this request"
-// @Success 200
-// @Failure 403
-// @router /aggregated [get]
-func (c *StoragePrivateController) GetAllAggregated(limit, page int) *JSONResponse {
-	storages, err := c.storageUcase.GetAggregatedStorages()
-	return c.ReturnJSONResponse(storages, err)
-}
