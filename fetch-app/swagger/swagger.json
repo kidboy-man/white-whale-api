@@ -48,6 +48,40 @@
                     }
                 }
             }
+        },
+        "/private/storages/aggregated": {
+            "get": {
+                "tags": [
+                    "private/storages"
+                ],
+                "summary": "Get All Storages",
+                "description": "Get All Storages\n\u003cbr\u003e",
+                "operationId": "StoragePrivateController.Get All Storages",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "limit of this request",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "page of this request",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
         }
     }
 }

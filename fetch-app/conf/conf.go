@@ -7,6 +7,7 @@ import (
 
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/joho/godotenv"
+	"github.com/patrickmn/go-cache"
 )
 
 var AppConfig Config
@@ -14,6 +15,7 @@ var AppConfig Config
 type Config struct {
 	JWTConfig   *JWTConfig
 	ApilayerKey string
+	Cache       *cache.Cache
 }
 
 type JWTConfig struct {
@@ -30,6 +32,8 @@ func init() {
 	beego.BConfig.RunMode = os.Getenv("beego_runmode")
 
 	AppConfig.ApilayerKey = os.Getenv("apilayer_api_key")
+
+	AppConfig.Cache = cache.New(5*time.Minute, 10*time.Minute)
 
 	AppConfig.JWTConfig = &JWTConfig{}
 

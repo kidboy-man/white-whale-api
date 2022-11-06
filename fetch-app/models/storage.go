@@ -26,13 +26,19 @@ type Storage struct {
 	Timestamp  string    `json:"timestamp"`
 }
 
-type AgragetedStorage struct {
-	Province string               `json:"area_provinsi"`
-	Size     *Agregate            `json:"size"`
-	Price    map[string]*Agregate `json:"price"`
+type AggregatedStorage struct {
+	Province  string     `json:"area_provinsi"`
+	Summaries []*Summary `json:"summaries"`
 }
 
-type Agregate struct {
+type Summary struct {
+	Week     string     `json:"week"`
+	Size     *Aggregate `json:"size"`
+	PriceIDR *Aggregate `json:"price_idr"`
+	PriceUSD *Aggregate `json:"price_usd"`
+}
+
+type Aggregate struct {
 	Min     float64 `json:"min"`
 	Max     float64 `json:"max"`
 	Median  float64 `json:"median"`

@@ -33,8 +33,8 @@ func (c *StoragePrivateController) GetAll(limit, page int) *JSONResponse {
 // @Param page query int false "page of this request"
 // @Success 200
 // @Failure 403
-// @router /agregated [get]
-func (c *StoragePrivateController) GetAllAgregates(limit, page int) *JSONResponse {
-	storages, err := c.storageUcase.GetAgregatedStorages()
+// @router /aggregated [get]
+func (c *StoragePrivateController) GetAllAggregated(limit, page int) *JSONResponse {
+	storages, err := c.storageUcase.GetAggregatedStorages()
 	return c.ReturnJSONResponse(storages, err)
 }
