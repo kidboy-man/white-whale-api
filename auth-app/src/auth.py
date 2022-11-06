@@ -1,6 +1,5 @@
-from os import access
 from http import HTTPStatus
-from flask import Blueprint, app, request, jsonify
+from flask import Blueprint, request, jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import (
     jwt_required,
@@ -27,6 +26,18 @@ def register():
     if not phone.isnumeric() or " " in phone:
         return (
             jsonify({"error": "phone should be numeric, also no spaces"}),
+            HTTPStatus.BAD_REQUEST,
+        )
+
+    if phone[:2] != "08":
+        return (
+            jsonify({"error": "invalid phone number format, must be in 08XXXX"}),
+            HTTPStatus.BAD_REQUEST,
+        )
+
+    if role not in ["user", "admin"]:
+        return (
+            jsonify({"error": "role must be one of admin or user"}),
             HTTPStatus.BAD_REQUEST,
         )
 
