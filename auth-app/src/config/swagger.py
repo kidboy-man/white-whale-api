@@ -12,7 +12,7 @@ template = {
         "termsOfService": "",
         "version": "1.0",
     },
-    "basePath": "/api/v1",  # base bash for blueprint registration
+    "basePath": "/",  # base bash for blueprint registration
     "schemes": ["http", "https"],
     "securityDefinitions": {
         "Bearer": {
@@ -36,5 +36,5 @@ swagger_config = {
     ],
     "static_url_path": "/flasgger_static",
     "swagger_ui": True,
-    "specs_route": "/",
+    "specs_route": "/swagger",
 }

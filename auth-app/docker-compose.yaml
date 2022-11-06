@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  fetch-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .flaskenv
+    networks:
+      - default
+    restart: unless-stopped
+    ports:
+      - "5000:5000"

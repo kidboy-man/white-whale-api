@@ -103,6 +103,9 @@ def me():
     claims = get_jwt()
     user_id = get_jwt_identity()
     user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({"error": "Wrong credentials"}), HTTPStatus.UNAUTHORIZED
+
     return (
         jsonify({"phone": user.phone, "role": user.role, "claims": claims}),
         HTTPStatus.OK,

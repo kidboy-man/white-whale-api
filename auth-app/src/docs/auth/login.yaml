@@ -15,11 +15,11 @@ parameters:
       properties:
         phone:
           type: "string"
-          example: "user@gmail.com"
+          example: "08122123456789"
         password:
           type: "string"
           format: password
-          example: "********"
+          example: "abcd"
 responses:
   200:
     description: When a user successfully logs in
