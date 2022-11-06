@@ -77,7 +77,7 @@ def login():
             refresh = create_refresh_token(identity=user.id)
             additional_claims = {"role": user.role}
             access = create_access_token(
-                identity=user.id, additional_claims=additional_claims
+                identity=f"{user.id}", additional_claims=additional_claims
             )
 
             return (
@@ -104,7 +104,7 @@ def me():
     user_id = get_jwt_identity()
     user = User.query.filter_by(id=user_id).first()
     return (
-        jsonify({"phone": user.phone, "role": user.role}),
+        jsonify({"phone": user.phone, "role": user.role, "claims": claims}),
         HTTPStatus.OK,
     )
 
