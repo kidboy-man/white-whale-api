@@ -6,6 +6,7 @@ from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
     get_jwt_identity,
+    get_jwt,
 )
 from flasgger import swag_from
 from src.database import User, db
@@ -74,7 +75,10 @@ def login():
 
         if is_pass_correct:
             refresh = create_refresh_token(identity=user.id)
-            access = create_access_token(identity=user.id)
+            additional_claims = {"role": user.role}
+            access = create_access_token(
+                identity=user.id, additional_claims=additional_claims
+            )
 
             return (
                 jsonify(
@@ -96,9 +100,13 @@ def login():
 @auth.get("/me")
 @jwt_required()
 def me():
+    claims = get_jwt()
     user_id = get_jwt_identity()
     user = User.query.filter_by(id=user_id).first()
-    return jsonify({"phone": user.phone, "role": user.role}), HTTPStatus.OK
+    return (
+        jsonify({"phone": user.phone, "role": user.role}),
+        HTTPStatus.OK,
+    )
 
 
 @auth.get("/token/refresh")
