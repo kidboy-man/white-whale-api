@@ -99,6 +99,7 @@ def login():
 
 @auth.get("/me")
 @jwt_required()
+@swag_from("./docs/auth/account.yaml")
 def me():
     claims = get_jwt()
     user_id = get_jwt_identity()
