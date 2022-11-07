@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+  auth-app:
+    build:
+      context: ./auth-app
+      dockerfile: Dockerfile
+    env_file: auth-app/.flaskenv
+    networks:
+      - default
+    ports:
+      - "5000:5000"
+  fetch-app:
+    build:
+      context: ./fetch-app
+      dockerfile: Dockerfile
+    env_file: fetch-app/.env
+    depends_on:
+      - auth-app
+    networks:
+      - default
+    ports:
+      - "8080:8080"
