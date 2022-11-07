@@ -78,6 +78,13 @@
                         "description": "page of this request",
                         "type": "integer",
                         "format": "int64"
+                    },
+                    {
+                        "in": "header",
+                        "name": "authorization",
+                        "description": "bearer token in jwt",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
