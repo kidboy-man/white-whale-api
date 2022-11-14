@@ -1,14 +1,17 @@
 package usecase
 
 import (
+	"encoding/json"
 	"fetch-app/conf"
 	"fetch-app/helpers"
 	"fetch-app/models"
 	repository "fetch-app/repositories"
 	"fmt"
-	"sort"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/beego/beego/v2/core/logs"
 )
 
 type StorageUsecase interface {
@@ -51,9 +54,9 @@ func (u *storageUsecase) GetStorages() (storages []*models.Storage, err error) {
 
 func (u *storageUsecase) GetAggregatedStorages() (aggregateds []*models.AggregatedStorage, err error) {
 	storages, err := u.GetStorages()
-	sort.SliceStable(storages, func(i, j int) bool {
-		return storages[i].ParsedDate.Before(storages[j].ParsedDate)
-	})
+	if err != nil {
+		return
+	}
 
 	mapPricesIDRToProvince := make(map[string][]float64)
 	mapPricesUSDToProvince := make(map[string][]float64)
@@ -63,7 +66,24 @@ func (u *storageUsecase) GetAggregatedStorages() (aggregateds []*models.Aggregat
 	mapTotalPriceUSDToProvince := make(map[string]float64)
 
 	for _, storage := range storages {
-		year, week := storage.ParsedDate.ISOWeek()
+		if storage.ParsedDate == "" && storage.Timestamp == "" {
+			continue
+		}
+
+		date, err := time.Parse(time.RFC3339, storage.ParsedDate)
+		if err != nil {
+			jsonBytes, _ := json.Marshal(storage)
+			logs.Debug("storage parsed", string(jsonBytes))
+			logs.Error("error parsing date %s: %v", storage.ParsedDate, err)
+			number, err := strconv.ParseFloat(storage.Timestamp, 10)
+			if err != nil {
+				logs.Error(err)
+				return nil, err
+			}
+
+			date = time.Unix(int64(number), 0)
+		}
+		year, week := date.ISOWeek()
 		size, _ := strconv.ParseFloat(strings.TrimSpace(storage.Size), 64)
 		priceIDR, _ := strconv.ParseFloat(strings.TrimSpace(storage.PriceIDR), 64)
 		priceUSD, _ := strconv.ParseFloat(strings.TrimSpace(storage.PriceUSD), 64)

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fetch-app/models"
 	"net/http"
+
+	"github.com/beego/beego/v2/core/logs"
 )
 
 type StorageRepository interface {
@@ -24,17 +26,20 @@ func (r *storageRepository) FetchStorages() (storages []*models.Storage, err err
 
 	request, err := http.NewRequest("GET", "https://stein.efishery.com/v1/storages/5e1edf521073e315924ceab4/list", nil)
 	if err != nil {
+		logs.Error("error creating request", err)
 		return
 	}
 
 	response, err := r.client.Do(request)
 	if err != nil {
+		logs.Error("error executing request", err)
 		return
 	}
 
 	defer response.Body.Close()
 	err = json.NewDecoder(response.Body).Decode(&storages)
 	if err != nil {
+		logs.Error("error decoding response", err)
 		return
 	}
 

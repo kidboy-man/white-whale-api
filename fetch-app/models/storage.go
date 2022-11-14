@@ -1,7 +1,5 @@
 package models
 
-import "time"
-
 // to fetch from json:
 //
 //	{
@@ -15,15 +13,15 @@ import "time"
 //	    "timestamp": "1641042706799"
 //	  },
 type Storage struct {
-	UUID       string    `json:"uuid"`
-	Comodity   string    `json:"komoditas"`
-	Province   string    `json:"area_provinsi"`
-	City       string    `json:"area_kota"`
-	Size       string    `json:"size"`
-	PriceIDR   string    `json:"price"`
-	PriceUSD   string    `json:"price_usd"`
-	ParsedDate time.Time `json:"tgl_parsed"`
-	Timestamp  string    `json:"timestamp"`
+	UUID       string `json:"uuid"`
+	Comodity   string `json:"komoditas"`
+	Province   string `json:"area_provinsi"`
+	City       string `json:"area_kota"`
+	Size       string `json:"size"`
+	PriceIDR   string `json:"price"`
+	PriceUSD   string `json:"price_usd"`
+	ParsedDate string `json:"tgl_parsed"`
+	Timestamp  string `json:"timestamp"`
 }
 
 type AggregatedStorage struct {
