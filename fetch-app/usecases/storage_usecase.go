@@ -75,7 +75,7 @@ func (u *storageUsecase) GetAggregatedStorages() (aggregateds []*models.Aggregat
 			jsonBytes, _ := json.Marshal(storage)
 			logs.Debug("storage parsed", string(jsonBytes))
 			logs.Error("error parsing date %s: %v", storage.ParsedDate, err)
-			number, err := strconv.ParseFloat(storage.Timestamp, 10)
+			number, err := strconv.ParseFloat(storage.Timestamp, 64)
 			if err != nil {
 				logs.Error(err)
 				return nil, err
